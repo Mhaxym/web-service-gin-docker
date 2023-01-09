@@ -35,9 +35,9 @@ func CreateAlbums() {
 	}
 
 	var service redis.Service = *redis.GetService()
-	// Primero guardamos los registros de la página
+	// First we save the data
 	service.MSet(data)
-	// Después guardamos la página
+	// Then we save the page
 	service.Set(goCache.GetPageKey("AlbumManager"), dataPage.ToJSON())
 
 }

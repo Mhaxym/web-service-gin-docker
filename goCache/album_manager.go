@@ -44,16 +44,16 @@ func (am *AlbumManager) loadFromRedis() error {
 		log.Fatal(err)
 		return err
 	}
-	// Se carga la página
+	// We check if the page exists and load the data
 	dataPage := DataPage{Name: am.Manager.CacheName}
 	dataPage.FromJSON(value)
-	// Se cargan los registros
+	// We load the related keys data
 	data, err := redisService.MGet(dataPage.PageKeys)
 	if err != nil {
 		log.Fatal(err)
 		return err
 	}
-	// Se cargan los registros
+	// We deserialize the data
 	for _, value := range data {
 		album := &Album{}
 		json.Unmarshal([]byte(value.(string)), album)
@@ -82,6 +82,7 @@ func (am *AlbumManager) GetAlbums() []Album {
 
 func (am *AlbumManager) AddAlbum(album *Album) {
 	am.albums = append(am.albums, *album)
+	am.albums_by_id[(*album).ID] = *album
 }
 
 func (am *AlbumManager) GetAlbum(id string) (Album, error) {

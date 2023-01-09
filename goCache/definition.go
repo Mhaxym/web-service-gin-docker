@@ -12,7 +12,7 @@ type IGoCache interface {
 
 type IManager interface {
 	Load()
-	GetManagerName() string 
+	GetManagerName() string
 }
 
 type Manager struct {

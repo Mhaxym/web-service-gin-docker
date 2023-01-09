@@ -2,6 +2,7 @@ package redis
 
 import (
 	"log"
+	"os"
 	"sync"
 	"time"
 
@@ -19,9 +20,9 @@ func GetService() *Service {
 	if (*service).client == nil {
 		redisServiceLock.Do(func() {
 			client := redis.NewClient(&redis.Options{
-				Addr:     "127.0.0.1:6379",
+				Addr:     os.Getenv("REDIS_HOST"),
 				Password: "",
-				DB:       10,
+				DB:       0,
 			})
 
 			_, err := client.Ping().Result()
