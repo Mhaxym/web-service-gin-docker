@@ -3,7 +3,6 @@ package goCache
 import (
 	"encoding/json"
 	"errors"
-	"log"
 	"strconv"
 	"web-service-gin-docker/redis"
 )
@@ -41,7 +40,6 @@ func (am *AlbumManager) loadFromRedis() error {
 	redisService := redis.GetService()
 	value, err := redisService.Get(GetPageKey(am.Manager.CacheName))
 	if err != nil {
-		log.Fatal(err)
 		return err
 	}
 	// We check if the page exists and load the data
@@ -50,7 +48,6 @@ func (am *AlbumManager) loadFromRedis() error {
 	// We load the related keys data
 	data, err := redisService.MGet(dataPage.PageKeys)
 	if err != nil {
-		log.Fatal(err)
 		return err
 	}
 	// We deserialize the data
