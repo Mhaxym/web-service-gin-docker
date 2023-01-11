@@ -22,7 +22,7 @@ func main() {
 // getAlbums returns a JSON representation of all albums in the album manager.
 // The JSON result is written to the http response.
 func getAlbums(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, goCache.GetAlbumManager().GetAlbums())
+	c.JSON(http.StatusOK, goCache.GetAlbumManager().GetAlbums())
 }
 
 // The postAlbums function is called to process an HTTP POST request
@@ -43,7 +43,7 @@ func postAlbums(c *gin.Context) {
 	goCache.GetAlbumManager().AddAlbum(&newAlbum)
 
 	// Return the new album as JSON in the response.
-	c.IndentedJSON(http.StatusCreated, newAlbum)
+	c.JSON(http.StatusCreated, newAlbum)
 }
 
 // Gets an album by ID.
@@ -52,8 +52,8 @@ func getAlbumByID(c *gin.Context) {
 	id := c.Param("id")
 	album, err := goCache.GetAlbumManager().GetAlbum(id)
 	if err != nil {
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+		c.JSON(http.StatusNotFound, gin.H{"message": "album not found"})
 		return
 	}
-	c.IndentedJSON(http.StatusOK, album)
+	c.JSON(http.StatusOK, album)
 }
