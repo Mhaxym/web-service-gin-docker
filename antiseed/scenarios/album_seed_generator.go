@@ -39,7 +39,4 @@ func CreateAlbums() {
 	service.MSet(data)
 	// Then we save the page
 	service.Set(goCache.GetPageKey("AlbumManager"), dataPage.ToJSON())
-	// Get one item from redis
-	datapage, _ := service.Get(goCache.GetPageKey("AlbumManager"))
-	fmt.Println(datapage)
 }

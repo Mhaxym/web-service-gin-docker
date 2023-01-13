@@ -18,21 +18,6 @@ var redisServiceLock sync.Once
 
 func GetService() *Service {
 	if (*service).client == nil {
-		// redisServiceLock.Do(func() {
-		// 	client := redis.NewClient(&redis.Options{
-		// 		Addr:     os.Getenv("REDIS_HOST"),
-		// 		Password: "",
-		// 		DB:       0,
-		// 	})
-
-		// 	_, err := client.Ping().Result()
-		// 	if err != nil {
-		// 		log.Fatal(err)
-		// 	}
-		// 	service = &Service{
-		// 		client: client,
-		// 	}
-		// })
 		//Create a new cluster client
 		redisServiceLock.Do(func() {
 			client := redis.NewClusterClient(&redis.ClusterOptions{
