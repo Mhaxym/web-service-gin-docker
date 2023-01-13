@@ -28,7 +28,7 @@ func CreateAlbums() {
 			Price:  math.Round(rand.Float64()*10000) / 100,
 		}
 
-		key := fmt.Sprintf("%s/%s", dataPage.Name, item.ID)
+		key := fmt.Sprintf("{%s}/%s", dataPage.Name, item.ID)
 
 		data[key], _ = json.Marshal(&item)
 		dataPage.AddPageKey(key)
@@ -39,5 +39,7 @@ func CreateAlbums() {
 	service.MSet(data)
 	// Then we save the page
 	service.Set(goCache.GetPageKey("AlbumManager"), dataPage.ToJSON())
-
+	// Get one item from redis
+	datapage, _ := service.Get(goCache.GetPageKey("AlbumManager"))
+	fmt.Println(datapage)
 }
