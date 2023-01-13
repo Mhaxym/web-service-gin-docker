@@ -17,8 +17,8 @@ var ALBUM_NAMES = [10]string{"Blue Train", "Kind of Blue", "Portrait in Jazz", "
 
 func CreateAlbums() {
 
-	var data = map[string]interface{}{}
 	var dataPage = goCache.DataPage{Name: "AlbumManager"}
+	var service redis.Service = *redis.GetService()
 
 	for i := 0; i < N_ALBUM; i++ {
 		item := goCache.Album{
@@ -28,15 +28,11 @@ func CreateAlbums() {
 			Price:  math.Round(rand.Float64()*10000) / 100,
 		}
 
-		key := fmt.Sprintf("{%s}/%s", dataPage.Name, item.ID)
+		key := fmt.Sprintf("%s/%s", dataPage.Name, item.ID)
 
-		data[key], _ = json.Marshal(&item)
+		data, _ := json.Marshal(&item)
 		dataPage.AddPageKey(key)
+		service.Set(key, data)
 	}
-
-	var service redis.Service = *redis.GetService()
-	// First we save the data
-	service.MSet(data)
-	// Then we save the page
 	service.Set(goCache.GetPageKey("AlbumManager"), dataPage.ToJSON())
 }
